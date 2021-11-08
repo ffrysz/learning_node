@@ -11,7 +11,9 @@ const randomChoice = (arr) => {
 
 const people = [];
 
-for (i = 1; i <= 20; i++) {
+let i = 0;
+
+while (i < 20) {
   const personGender = randomChoice(gender);
   const personFirstName = personGender === 'male' ? randomChoice(maleNames) : randomChoice(femaleNames);
 
@@ -23,7 +25,22 @@ for (i = 1; i <= 20; i++) {
   };
 
   people.push(person);
+  i++;
 }
+
+// for (i = 1; i <= 20; i++) {
+//   const personGender = randomChoice(gender);
+//   const personFirstName = personGender === 'male' ? randomChoice(maleNames) : randomChoice(femaleNames);
+
+//   const person = {
+//     gender: personGender,
+//     firstName: personFirstName,
+//     lastName: randomChoice(lastNames),
+//     age: Math.floor(Math.random() * 100),
+//   };
+
+//   people.push(person);
+// }
 
 const data = JSON.stringify(people);
 
