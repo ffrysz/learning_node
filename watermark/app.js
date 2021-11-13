@@ -1,5 +1,7 @@
 const Jimp = require('jimp');
 const inquirer = require('inquirer');
+const { exists } = require('fs');
+// const exists = require('exists');
 
 const addTextWatermarkToImage = async function (inputFile, outputFile, text) {
   const image = await Jimp.read(inputFile);
@@ -12,9 +14,9 @@ const addTextWatermarkToImage = async function (inputFile, outputFile, text) {
   image.print(font, 10, 10, textData, image.getWidth(), image.getHeight());
   image.rotate(30);
   await image.quality(100).writeAsync(outputFile);
+  console.log('Success!');
+  startApp();
 };
-
-// addTextWatermarkToImage('./test.jpg', './test-with-watermark.jpg', 'Hello world')
 
 const addImageWatermarkToImage = async function (inputFile, outputFile, watermarkFile) {
   const image = await Jimp.read(inputFile);
@@ -27,9 +29,17 @@ const addImageWatermarkToImage = async function (inputFile, outputFile, watermar
     opacitySource: 0.5,
   });
   await image.quality(100).writeAsync(outputFile);
+  console.log('Success!');
+  startApp();
 };
 
-// addImageWatermarkToImage('./test.jpg', './test-with-watermark2.jpg', './logo.png');
+const prepareOutputFileName = function (fileName) {
+  const partsOfFileName = fileName.split('.');
+  const outputFileName = partsOfFileName[0] + '-with-watermark' + '.' + partsOfFileName[1];
+  return outputFileName;
+};
+
+prepareOutputFileName('test.abc');
 
 const startApp = async () => {
 
@@ -62,7 +72,9 @@ const startApp = async () => {
       message: 'Type your watermark text:',
     }]);
     options.watermarkText = text.value;
-    addTextWatermarkToImage('./img/' + options.inputImage, './test-with-watermark.jpg', options.watermarkText);
+    exists('./img/' + options.inputImage, (e) => {
+      e ? addTextWatermarkToImage('./img/' + options.inputImage, prepareOutputFileName(options.inputImage), options.watermarkText) : console.log('Something went wrong... Try again.');
+    });
   }
   else {
     const image = await inquirer.prompt([{
@@ -72,7 +84,13 @@ const startApp = async () => {
       default: 'logo.png',
     }]);
     options.watermarkImage = image.filename;
-    addImageWatermarkToImage('./img/' + options.inputImage, './test-with-watermark.jpg', './img/' + options.watermarkImage);
+    exists('./img/' + options.inputImage, (e) => {
+      if (e) {
+        exists('./img/' + options.watermarkImage, (e) => {
+          e ? addImageWatermarkToImage('./img/' + options.inputImage, prepareOutputFileName(options.inputImage), './img/' + options.watermarkImage) : console.log('Something went wrong... Try again.');
+        });
+      } else console.log('Something went wrong... Try again.');
+    });
   }
 
 }
