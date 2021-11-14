@@ -83,7 +83,7 @@ const startApp = async () => {
     }]);
     options.watermarkText = text.value;
     exists('./img/' + options.inputImage, (e) => {
-      e ? addTextWatermarkToImage('./img/' + options.inputImage, prepareOutputFileName(options.inputImage), options.watermarkText) : console.log('Something went wrong... Try again.');
+      e ? addTextWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFileName(options.inputImage), options.watermarkText) : console.log('Something went wrong... Try again.');
     });
   }
   else {
@@ -97,7 +97,7 @@ const startApp = async () => {
     exists('./img/' + options.inputImage, (e) => {
       if (e) {
         exists('./img/' + options.watermarkImage, (e) => {
-          e ? addImageWatermarkToImage('./img/' + options.inputImage, prepareOutputFileName(options.inputImage), './img/' + options.watermarkImage) : console.log('Something went wrong... Try again.');
+          e ? addImageWatermarkToImage('./img/' + options.inputImage, './img/' + prepareOutputFileName(options.inputImage), './img/' + options.watermarkImage) : console.log('Something went wrong... Try again.');
         });
       } else console.log('Something went wrong... Try again.');
     });
