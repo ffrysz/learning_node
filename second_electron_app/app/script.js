@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
-// import AppDescription from './AppDescription';
+import AppDescription from './AppDescription';
 
 class App extends React.Component {
 
@@ -25,7 +25,7 @@ class App extends React.Component {
     return (
       <div>
         <h1>Protect your eyes</h1>
-        {/* <AppDescription /> */}
+        <AppDescription />
         {(status.off) &&
           <div>
             <p>According to optometrists in order to save your eyes, you should follow the 20/20/20. It means you should rest your eyes every 20 minutes for 20 seconds by looking more than 20 feet away.</p>
